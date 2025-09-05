@@ -1,0 +1,68 @@
+{
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "EV3Dev: Send program",
+            "command": "scp",
+            "args": [
+                "${file}",
+                "robot@ev3dev.local:/home/robot/",
+            ],
+            "presentation": {
+                "reveal": "silent",
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "type": "shell",
+            "label": "EV3Dev: Compile program",
+            "command": "ssh",
+            "args": [
+                "robot@ev3dev.local",
+                "gcc ${fileBasename} -pthread -lev3dev-c -lm -o ${fileBasenameNoExtension}"
+            ],
+            "presentation": {
+                "reveal": "silent",
+                "panel": "shared"
+            }
+        },
+        {
+            "type": "shell",
+            "label": "EV3Dev: Run program",
+            "command": "ssh",
+            "args": [
+                "robot@ev3dev.local",
+                "./${fileBasenameNoExtension}"
+            ],
+            "presentation": {
+                "reveal": "silent",
+                "panel": "shared",
+                "close": true
+            }
+        },
+        {
+            "label": "EV3Dev: Send and Compile program",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "EV3Dev: Send program",
+                "EV3Dev: Compile program"
+            ],
+            "presentation": {
+                "reveal": "silent",
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "EV3Dev: Send, Compile and Run program",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "EV3Dev: Send program",
+                "EV3Dev: Compile program",
+                "EV3Dev: Run program"
+            ]
+        },
+    ],
+    "version": "2.0.0"
+}
